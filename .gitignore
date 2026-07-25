@@ -1,0 +1,16 @@
+output/
+**/__pycache__/
+marked_by_Merry.md
+PURE/
+MMPD/
+UBFC-rPPG/
+pytorch3d/
+submodules/nvdiffrast
+ppg_modulation.png
+assets/flame_model/flame2020.pkl
+assets/smirk/pretrained_models/
+preprocess/submodules/RobustVideoMatting/rvm_resnet50.pth
+submodules/simple-knn/build/
+run.bat
+preprocess/submodules/DECA/run.bat
+debug.py

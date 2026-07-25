@@ -1,0 +1,66 @@
+name: HRAvatar
+channels:
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch3d/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/pytorch/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main
+  - https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/r
+  - nvidia/label/cuda-11.7.1
+  - pytorch 
+  - conda-forge
+  - defaults
+  
+dependencies:
+  - python=3.10.14
+  - pytorch-cuda=11.7
+  - pytorch==1.13.1 
+  - torchvision==0.14.1 
+  - torchaudio==0.13.1 
+  - pytorch3d=0.7.2
+  - ffmpeg=4.0.2
+  - cuda-toolkit 
+  - ninja
+  - pip
+  - pip:
+      - opencv-python==4.8.0.76
+      - face-alignment==1.4.1
+      - face-detection-tflite==0.6.0
+      - scikit-image==0.22.0
+      - kornia==0.7.3
+      - loguru==0.7.2
+      - mediapipe==0.10.10
+      - av==12.2.0
+      - tqdm==4.66.4
+      - pims==0.7
+      - yacs==0.1.8
+      - chumpy==0.70
+      - jax==0.4.30
+      - jaxlib==0.4.30
+      - numba==0.57.0
+      - torchfile==0.1.0
+      - plyfile==1.0.3
+      - pyshtools==4.13.1
+      - timm==0.6.7
+      - natsort==8.4.0
+      - imageio-ffmpeg==0.4.9
+      - pytorch-lightning==1.5.2
+      - future==0.17.1
+      - fsspec[http]==2023.05.0
+      - pyDeprecate==0.3.1
+      - torchmetrics==1.4.0.post0
+      - omegaconf==2.1.1
+      - diffusers==0.12.1
+      - huggingface-hub==0.24.5
+      - einops==0.8.0
+      - carvekit-colab==4.1.0
+      - ipdb==0.13.13
+      - taming-transformers==0.0.1
+      - openai-clip==1.0.1
+      - transformers==4.44.0
+      - roma==1.5.0
+      - numpy==1.23.5
+      
+
+      
