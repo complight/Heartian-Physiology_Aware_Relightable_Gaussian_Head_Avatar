@@ -2,34 +2,11 @@
   <h1 align="center">Heartian: Physiology-Aware Relightable Gaussian</h1>
 <p align="center">
 
-## 📌 Introduction
-
-## 📂 Datasets preparation
-Download the insta dataset (already with extracted mask) from [INSTA](https://github.com/Zielon/INSTA). The dataset can be accessed [here](https://keeper.mpdl.mpg.de/d/5ea4d2c300e9444a8b0b/).
-
-The HDTF videos we used can be downloaded from [here](https://drive.google.com/drive/folders/1lJMrNuvCSCDwMsd6Pz7W3cH_jXPt_fKv?usp=sharing).
-
-## 🛠️ Setup
-
-#### Optimizer
-The optimizer uses PyTorch and CUDA extensions in a Python environment to produce trained models. 
-
-#### Hardware Requirements
-
-- CUDA-ready GPU with Compute Capability 7.0+
-- 24 GB VRAM (to train to paper evaluation quality)
-
-#### Software Requirements
-- Conda (recommended for easy setup)
-- C++ Compiler for PyTorch extensions (we used VS Code)
-- CUDA SDK 11 for PyTorch extensions (we used 11.7)
-- C++ Compiler and CUDA SDK must be compatible
-
-### Environment Setup
-Our default, provided install method is based on Conda package and environment management:
+## Setup
+To begin with, we use Conda for environment management. Create and activate the required environment using:
 ```shell
 conda env create --file environment.yml
-conda activate HRAvatar
+conda activate Heartian
 cd submodules
 git clone https://github.com/NVlabs/nvdiffrast.git
 pip install nvdiffrast
@@ -37,81 +14,136 @@ pip install diff-gaussian-rasterization_c10
 pip install simple-knn
 ```
 
-## 🔧 Data Preprocessing
+## Data Preprocessing
 
-Data preprocessing for each video includes several steps: frame extraction, foreground extraction, keypoint estimation, and face tracking.
+### rPPG Datasets
+We use three rPPG datasets containing ground-truth rPPG signals and monocular video recordings: [UBFC-rPPG](https://sites.google.com/view/ybenezeth/ubfcrppg), [PURE](https://www.tu-ilmenau.de/universitaet/fakultaeten/fakultaet-informatik-und-automatisierung/profil/institute-und-fachgebiete/institut-fuer-technische-informatik-und-ingenieurinformatik/fachgebiet-neuroinformatik-und-kognitive-robotik/data-sets-code/pulse-rate-detection-dataset-pure), and [MMPD](https://github.com/McJackTang/MMPD_rPPG_dataset). Please obtain the datasets following the instructions provided by their respective publishers. Before running the preprocessing code, select the required subsets for this project and organize the datasets according to the directory structures shown below.
 
-For the INSTA dataset, we directly use the provided masks.
 ```shell
-# example script
-bash preprocess/preprocess_shell/insta/bala_preprocess.sh
+UBFC-rPPG/
+|-- subject1/
+|   |-- vid.avi
+|   |-- ground_truth.txt
+|-- subject2/
+|   |-- vid.avi
+|   |-- ground_truth.txt
+|...
 ```
 
-For the HDTF dataset or custom videos, you can run the following script:
 ```shell
-# example script
-bash preprocess/preprocess_shell/HDTF/marcia_preprocess.sh
+PURE/
+|-- 01-01/
+|   |-- 01-01/
+|   |-- 01-01.json
+|-- 02-01/
+|   |-- 02-01/
+|   |-- 02-01.json
+|...
 ```
 
-Use Intrinsic Anything to extract albedo as pseudo-GT.
 ```shell
-# example script
-bash preprocess/preprocess_shell/extract_albedo.sh
+MMPD/
+|-- subject1/
+|   |p1_0/
+|        |-- p1_0.mat
+|   |p1_4/
+|        |-- p1_4.mat
+|   |p1_8/
+|        |-- p1_8.mat
+|   |p1_16/
+|        |-- p1_16.mat
+|-- subject2/
+|   |p2_0/
+|        |-- p2_0.mat
+|   |p2_4/
+|        |-- p2_4.mat
+|   |p2_8/
+|        |-- p2_8.mat
+|   |p2_16/
+|        |-- p2_16.mat
+|...
 ```
 
-For more details on data preprocessing, refer to [Data_Preprocessing](assets/docs/Data_Preprocessing.md)
+This work is built upon [HRAvatar](https://github.com/Pixel-Talk/HRAvatar), following its data preprocessing procedure described in [Data_Preprocessing](assets/docs/Data_Preprocessing.md). In this project, monocular videos undergo standard preprocessing and facial tracking to extract per-frame FLAME parameters. The preprocessing pipeline is applied to each scene/sequence as follows.
 
+Set the `base_dir` to the path of the corresponding subject or sequence:
+
+```shell
+base_dir=/path/to/subject/in/each/scene
+
+# Examples:
+# UBFC-rPPG/subject1
+# PURE/01-01
+# MMPD/subject1/p1_0
+```
+Preprocessing procedure for each dataset:
+
+```shell
+# Step 1 Basic Preprocessing
+# UBFC-rPPG
+python preprocess/crop_and_matting.py --source UBFC-rPPG --name subject1 --image_size 512 512 --matting --crop_image --mask_clothes True
+# PURE
+python preprocess/crop_and_matting.py --source PURE --name 01-01 --image_size 512 512 --matting --crop_image --mask_clothes True
+# MMPD
+python preprocess/crop_and_matting.py --source MMPD --name subject1 --id 0 --image_size 512 512 --matting --crop_image --mask_clothes True
+
+# --save_bg Save the temporal background removed during foreground matting
+
+# Step 2 Facial Tracking
+cd preprocess/submodules/DECA
+python demos/demo_reconstruct.py -i $base_dir/image --savefolder $base_dir/deca --saveCode True --saveVis False --sample_step 1 --render_orig False
+cd ../..
+python keypoint_detector.py --path $base_dir
+python iris.py --path $base_dir
+cd submodules\DECA
+python -m optimize --path $base_dir --cx 256.00 --cy 256.00 --fx 1536.00 --fy 1536.00 --size 512 --n_shape 100 --n_expr 100 --with_translation
+
+cd ../../..
+```
+
+### Environment Map
 Environment map filtering is described in [Filter_Envmap](assets/docs/Filter_Envmap.md)
 
+## Training
+Training proceeds in two stages: the first stage follows the same configuration to generate the baseline avatar, while the second stage introduces and trains the rPPG modulation parameters.
 
-## 🎯 Traning
-
-For Custom DATASET
 ```shell
-# example script
-# Note: Lower learning rates can lead to better geometry 
-#       but may degrade quantitative metrics (e.g., PSNR, SSIM)
-CUDA_VISIBLE_DEVICES=0  python train.py --source_path /path/to/subject \
-  --model_path outputs/custom/subject  --eval  --test_set_num 500  --epochs 15 \
-  --max_reflectance 0.8 --min_reflectance 0.04 --with_envmap_consist \
-  --expression_dirs_lr 1e-7 --pose_dirs_lr 1e-7 --shape_dirs_lr 1e-8 \
-  --position_lr_init 5e-5 --position_lr_final 5e-7
+# UBFC-rPPG
+python train.py --source_path UBFC-rPPG/subject1 --model_path output/UBFC-rPPG/subject13_baseline --eval --epoch 15 --max_reflectance 0.8 --min_reflectance 0.04 --with_envmap_consist --expression_dirs_lr 1e-7 --pose_dirs_lr 1e-7 --shape_dirs_lr 1e-8 --position_lr_init 5e-5 --position_lr_final 5e-7
+python train.py --source_path UBFC-rPPG/subject1 --model_path output/UBFC-rPPG/subject13_rppg --enable_heartbeat_albedo --eval --epoch 60 --max_reflectance 0.8 --min_reflectance 0.04 --with_envmap_consist --expression_dirs_lr 1e-7 --pose_dirs_lr 1e-7 --shape_dirs_lr 1e-8 --position_lr_init 5e-5 --position_lr_final 5e-7
+python render.py --model_path output/UBFC-rPPG/subject1_rppg --enable_rppg
+
+# PURE
+python train.py --source_path PURE/01-01 --model_path output/PURE/subject01-01_baseline --eval --epoch 15 --max_reflectance 0.8 --min_reflectance 0.04 --with_envmap_consist --expression_dirs_lr 1e-7 --pose_dirs_lr 1e-7 --shape_dirs_lr 1e-8 --position_lr_init 5e-5 --position_lr_final 5e-7
+python train.py --source_path PURE/01-01 --model_path output/PURE/subject01-01_rppg --enable_heartbeat_albedo --eval --epoch 60 --max_reflectance 0.8 --min_reflectance 0.04 --with_envmap_consist --expression_dirs_lr 1e-7 --pose_dirs_lr 1e-7 --shape_dirs_lr 1e-8 --position_lr_init 5e-5 --position_lr_final 5e-7
+python render.py --model_path output/PURE/subject01-01_rppg --enable_rppg
+
+# MMPD
+python train.py --source_path MMPD/subject1/p1_0 --model_path output/MMPD/subject1_0_baseline --eval --epoch 15 --max_reflectance 0.8 --min_reflectance 0.04 --with_envmap_consist --expression_dirs_lr 1e-7 --pose_dirs_lr 1e-7 --shape_dirs_lr 1e-8 --position_lr_init 5e-5 --position_lr_final 5e-7
+python train.py --source_path MMPD/subject1/p1_0 --model_path output/MMPD/subject1_0_rppg --enable_heartbeat_albedo --eval --epoch 60 --max_reflectance 0.8 --min_reflectance 0.04 --with_envmap_consist --expression_dirs_lr 1e-7 --pose_dirs_lr 1e-7 --shape_dirs_lr 1e-8 --position_lr_init 5e-5 --position_lr_final 5e-7
+python render.py --model_path output/MMPD/subject1_0_rppg --enable_rppg
 ```
 
+## Rendering
+Render the full-sequence reconstruction results, organized according to their corresponding timesteps.
 
-## 🎨 Rendering
-
-Render the training and testing results  
-(This is automatically done after training by default)
 ```shell
-# example script
-CUDA_VISIBLE_DEVICES=0 python render.py  --model_path outputs/insta/bala
+# UBFC
+python render.py --model_path output/UBFC-rPPG/subject1_rppg --enable_rppg
+
+# PURE
+python render.py --model_path output/PURE/subject01-01_rppg --enable_rppg
+
+# MMPD
+python render.py --model_path output/MMPD/subject1_0_rppg --enable_rppg
 ```
 
-Render others
-Add arguments in render.py
+Additional Rendering Options:
 ```shell
---skip_test # Skip rendering self-reenactment test set results
---skip_train # Skip rendering self-reenactment training set results
---render_albedo # Render albedo component
---render_normal # Render normal component
---render_irradiance # Render irradiance component
---render_specular # Render specular component
---render_roughness  # Render roughness component
---render_reflectance # Render reflectance component
---render_depth  # Render depth map
---render_envmap # Visualize optimized environment map
---render_relighting # Perform relighting render
---with_relight_background # Use input environment map as background during relighting
---envmap_path assets/envmaps/cobblestone_street  # Filtered environment map for relighting
---render_material_editing # Render material editing results (gradually increase reflectance)
---corss_source_path  # Render cross-reenactment results (specify the processed data path of another subject)
---test_static_material_edting_idxs 100 # Apply material editing to a specific image
---test_static_relight_idxs 100  # Apply relighting to a specific image
-```
+# by adding the arguments to render.py
 
-### Evaluation
-```shell
-# example script
-python metrics.py --model_path outputs/insta/bala
+--with_real_bg                                  # Render with dynamic real background for ablation study
+--render_relighting                             # Perform relighting render
+--with_relight_background                       # Use input environment map as background during relighting
+--envmap_path assets/envmaps/children_hospital  # Filtered environment map for relighting under white, warm, cool lights and real-world scenarios
 ```

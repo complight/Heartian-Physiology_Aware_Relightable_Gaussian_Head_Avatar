@@ -272,7 +272,6 @@ class GaussianHeadModel(GaussianModel):
         beat_idx_tensor = torch.tensor([beat_idx], device=self.device)
         residual = self.heartbeat_mlp(phase_tensor, beat_idx_tensor, self.skin_xyz_norm).squeeze() 
         modulation = fundamental.detach() + self.heartbeat_B * residual  
-        # modulation = fundamental
 
         # Apply the modulation factor
         modulated_albedo = base_albedo.clone()
@@ -613,7 +612,7 @@ class GaussianHeadModel(GaussianModel):
             
         return xyz_lbs,transform_dict
 
-    
+
     
     def forward(self,shape_param,expression_param,full_pose_param,camera_center,eyelid_param=None,translation_param=None,warped_image=None,iteration=torch.inf):
         
