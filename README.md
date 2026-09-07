@@ -109,8 +109,8 @@ Training proceeds in two stages: the first stage follows the same configuration 
 
 ```shell
 # UBFC-rPPG
-python train.py --source_path UBFC-rPPG/subject1 --model_path output/UBFC-rPPG/subject13_baseline --eval --epoch 15 --max_reflectance 0.8 --min_reflectance 0.04 --with_envmap_consist --expression_dirs_lr 1e-7 --pose_dirs_lr 1e-7 --shape_dirs_lr 1e-8 --position_lr_init 5e-5 --position_lr_final 5e-7
-python train.py --source_path UBFC-rPPG/subject1 --model_path output/UBFC-rPPG/subject13_rppg --enable_heartbeat_albedo --eval --epoch 60 --max_reflectance 0.8 --min_reflectance 0.04 --with_envmap_consist --expression_dirs_lr 1e-7 --pose_dirs_lr 1e-7 --shape_dirs_lr 1e-8 --position_lr_init 5e-5 --position_lr_final 5e-7
+python train.py --source_path UBFC-rPPG/subject1 --model_path output/UBFC-rPPG/subject1_baseline --eval --epoch 15 --max_reflectance 0.8 --min_reflectance 0.04 --with_envmap_consist --expression_dirs_lr 1e-7 --pose_dirs_lr 1e-7 --shape_dirs_lr 1e-8 --position_lr_init 5e-5 --position_lr_final 5e-7
+python train.py --source_path UBFC-rPPG/subject1 --model_path output/UBFC-rPPG/subject1_rppg --enable_heartbeat_albedo --eval --epoch 60 --max_reflectance 0.8 --min_reflectance 0.04 --with_envmap_consist --expression_dirs_lr 1e-7 --pose_dirs_lr 1e-7 --shape_dirs_lr 1e-8 --position_lr_init 5e-5 --position_lr_final 5e-7
 python render.py --model_path output/UBFC-rPPG/subject1_rppg --enable_rppg
 
 # PURE

@@ -612,7 +612,7 @@ class GaussianHeadModel(GaussianModel):
             
         return xyz_lbs,transform_dict
 
-
+    
     
     def forward(self,shape_param,expression_param,full_pose_param,camera_center,eyelid_param=None,translation_param=None,warped_image=None,iteration=torch.inf):
         
