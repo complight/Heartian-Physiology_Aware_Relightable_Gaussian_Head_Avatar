@@ -125,7 +125,7 @@ python render.py --model_path output/MMPD/subject1_0_rppg --enable_rppg
 ```
 
 ## Rendering
-Render the full-sequence reconstruction results, organized according to their corresponding timesteps.
+Render the full-sequence reconstruction results, organized according to their corresponding timesteps. After rendering, the scene directory will contain the rendered video in `.mp4` format, as well as the reconstructed data reorganized according to the original format of each dataset. These outputs can then be directly used as input to the [rPPG-Toolbox](https://github.com/ubicomplab/rPPG-Toolbox) for evaluation under the same data format as the corresponding benchmark.
 
 ```shell
 # UBFC

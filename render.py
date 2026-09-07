@@ -590,29 +590,13 @@ def render_sets(dataset_args : ModelParams, epoch : int, pipeline : PipelinePara
             full_render_imgs = np.stack([p[1] for p in all_img_pairs_sorted], 0)
             print(f"🔧 full_render_imgs shape: {full_render_imgs.shape}")
 
-            # save rendered Heartian videos
-            # imageio.mimwrite(os.path.join(args.source_path, f'full_{gaussians.scene_name}_video.mp4'),full_render_imgs,fps=gaussians.fps,quality=8)
+            # save rendered Heartian video
+            imageio.mimwrite(os.path.join(args.source_path, f'full_{gaussians.scene_name}_video.mp4'),full_render_imgs,fps=gaussians.fps,quality=8)
 
             if 'UBFC-rPPG' in args.source_path:
                 output_avi_path = os.path.join(args.source_path, f'vid_ours.avi')
                 imageio.mimwrite(output_avi_path, full_render_imgs, fps=gaussians.fps, codec='rawvideo',  quality=None)
                 print(f"Saved rendered '.avi' video to {output_avi_path}")
-
-                if "render_albedo" in args.__dict__.keys() and args.render_albedo:
-                    # collect albedo frames in sorted order
-                    train_albedo_path = os.path.join(dataset_args.model_path, "train", f"ours_{scene.loaded_epoch}", "renders_albedo")
-                    test_albedo_path = os.path.join(dataset_args.model_path, "test", f"ours_{scene.loaded_epoch}", "renders_albedo")
-                    
-                    train_albedo_imgs = [cv2.imread(os.path.join(train_albedo_path, f'{i:05d}.png')) for i in range(len(train_indices))]
-                    test_albedo_imgs = [cv2.imread(os.path.join(test_albedo_path, f'{i:05d}.png')) for i in range(len(test_indices))]
-                    
-                    all_albedo_pairs = list(zip(train_indices, train_albedo_imgs)) + list(zip(test_indices, test_albedo_imgs))
-                    all_albedo_sorted = sorted(all_albedo_pairs, key=lambda x: x[0])
-                    full_albedo_imgs = np.stack([cv2.cvtColor(p[1][:,:,:3], cv2.COLOR_BGR2RGB) for p in all_albedo_sorted], 0)
-                    
-                    output_albedo_path = os.path.join(args.source_path, f'vid_ours_albedo.avi')
-                    imageio.mimwrite(output_albedo_path, full_albedo_imgs, fps=gaussians.fps, codec='rawvideo', quality=None)
-                    print(f"Saved albedo '.avi' video to {output_albedo_path}")
 
             elif 'MMPD' in args.source_path:
                 # Configuration for handling memory issue
