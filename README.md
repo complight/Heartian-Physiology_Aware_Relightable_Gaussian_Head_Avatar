@@ -87,7 +87,7 @@ MMPD/
 |...
 ```
 
-This work is built upon [HRAvatar](https://github.com/Pixel-Talk/HRAvatar), following its data preprocessing procedure described in [Data_Preprocessing](assets/docs/Data_Preprocessing.md). In this project, monocular videos undergo standard preprocessing and facial tracking to extract per-frame FLAME parameters. The preprocessing pipeline is applied to each scene/sequence as follows.
+This work is built upon [HRAvatar](https://github.com/Pixel-Talk/HRAvatar), following its data preprocessing procedure described in [Data_Preprocessing](https://github.com/Pixel-Talk/HRAvatar/blob/main/assets/docs/Data_Preprocessing.md). In this project, monocular videos undergo standard preprocessing and facial tracking to extract per-frame FLAME parameters. The preprocessing pipeline is applied to each scene/sequence as follows.
 
 Set the `base_dir` to the path of the corresponding subject or sequence:
 
@@ -125,7 +125,7 @@ cd ../../..
 ```
 
 ### Environment Map
-Environment map filtering is described in [Filter_Envmap](assets/docs/Filter_Envmap.md)
+Environment map filtering is described in [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/merryxyfan/Heartian-Physiology_Aware_Relightable_Gaussian_Head_Avatar/blob/main/assets/envmaps/envmap_preprocessing.ipynb)
 
 ## Training
 Training proceeds in two stages: the first stage follows the same configuration to generate the baseline avatar, while the second stage introduces and trains the rPPG modulation parameters.
@@ -169,4 +169,23 @@ Additional Rendering Options:
 --render_relighting                             # Perform relighting render
 --with_relight_background                       # Use input environment map as background during relighting
 --envmap_path assets/envmaps/children_hospital  # Filtered environment map for relighting under white, warm, cool lights and real-world scenarios
+```
+
+
+## Citation
+
+```bibtex
+@inproceedings{fan2026heartian,
+              author = {Fan, Xiaoyue and Echevarria, Jose and Paruchuri, Akshay and Ak{\c{s}}it, Kaan},
+              title = {{💓Heartian: Physiology-Aware Relightable Gaussian Head Avatar}},
+              booktitle = {SIGGRAPH Asia 2026 Technical Communications (SA Technical Communications '26)},
+              year = {2026},
+              month = {December 01--04},
+              publisher = {Association for Computing Machinery},
+              location = {Kuala Lumpur, Malaysia},
+              pages = {4},
+              isbn = {979-8-4007-2841-9/2026/12},
+              doi = {10.1145/3829339.3847838},
+              url = {https://arxiv.org/abs/2609.28539}
+              }
 ```
