@@ -3,8 +3,8 @@
 <p align="center">
 
 <p align="center">
-  <img src="https://img.shields.io/badge/DOI-10.1145%2F3829339.3847838-brightgreen" alt="DOI">
-  <a href="https://github.com/complight/Heartian"><img src="https://img.shields.io/badge/Code-GitHub-black" alt="Code"></a>
+  <img src="https://doi.org/10.1145/3829339.3847838" alt="DOI">
+  <a href="https://github.com/complight/Heartian-Physiology_Aware_Relightable_Gaussian_Head_Avatar"><img src="https://img.shields.io/badge/Code-GitHub-black" alt="Code"></a>
   <a href="https://arxiv.org/abs/2609.28539"><img src="https://img.shields.io/badge/arXiv-Preprint-red" alt="arXiv"></a>
   <a href="https://www.kaanaksit.com/assets/pdf/FanEtAl_SigAsia2026_Heartian_physiology_aware_relightable_gaussian_head_avatar.pdf"><img src="https://img.shields.io/badge/Manuscript-PDF-blue" alt="Manuscript"></a>
   <a href="https://www.kaanaksit.com/assets/pdf/FanEtAl_SigAsia2026_Supplementary_Heartian_physiology_aware_relightable_gaussian_head_avatar.pdf"><img src="https://img.shields.io/badge/Supplementary-PDF-lightgrey" alt="Supplementary"></a>
