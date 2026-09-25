@@ -1,6 +1,29 @@
 <p align="center">
-  <h1 align="center">Heartian: Physiology-Aware Relightable Gaussian</h1>
+  <h1 align="center">💓Heartian: Physiology-Aware Relightable Gaussian</h1>
 <p align="center">
+
+<p align="center">
+  <img src="https://img.shields.io/badge/DOI-10.1145%2F3829339.3847838-brightgreen" alt="DOI">
+  <a href="https://github.com/complight/Heartian"><img src="https://img.shields.io/badge/Code-GitHub-black" alt="Code"></a>
+  <a href="https://arxiv.org/abs/2609.28539"><img src="https://img.shields.io/badge/arXiv-Preprint-red" alt="arXiv"></a>
+  <a href="https://www.kaanaksit.com/assets/pdf/FanEtAl_SigAsia2026_Heartian_physiology_aware_relightable_gaussian_head_avatar.pdf"><img src="https://img.shields.io/badge/Manuscript-PDF-blue" alt="Manuscript"></a>
+  <a href="https://www.kaanaksit.com/assets/pdf/FanEtAl_SigAsia2026_Supplementary_Heartian_physiology_aware_relightable_gaussian_head_avatar.pdf"><img src="https://img.shields.io/badge/Supplementary-PDF-lightgrey" alt="Supplementary"></a>
+</p>
+
+<p align="center"><b>SIGGRAPH Asia 2026 Technical Communications</b></p>
+
+<p align="center">
+  <a href="https://merryxyfan.github.io">Xiaoyue Fan</a><sup>1</sup> ·
+  <a href="https://research.adobe.com/person/jose-echevarria/">Jose Echevarria</a><sup>2</sup> ·
+  <a href="https://akshayparuchuri.com/">Akshay Paruchuri</a><sup>3</sup> ·
+  <a href="https://kaanaksit.com">Kaan Akşit</a><sup>1</sup>
+</p>
+
+<p align="center">
+  <sup>1</sup> University College London &nbsp;&nbsp;
+  <sup>2</sup> Adobe Research &nbsp;&nbsp;
+  <sup>3</sup> Stanford University
+</p>
 
 ## Setup
 To begin with, we use Conda for environment management. Create and activate the required environment using:
