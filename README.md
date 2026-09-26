@@ -125,7 +125,7 @@ cd ../../..
 ```
 
 ### Environment Map
-Environment map filtering is described in [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/merryxyfan/Heartian-Physiology_Aware_Relightable_Gaussian_Head_Avatar/blob/main/assets/envmaps/envmap_preprocessing.ipynb)
+Environment map filtering is described in [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/complight/Heartian-Physiology_Aware_Relightable_Gaussian_Head_Avatar/blob/main/assets/envmaps/envmap_preprocessing.ipynb)
 
 ## Training
 Training proceeds in two stages: the first stage follows the same configuration to generate the baseline avatar, while the second stage introduces and trains the rPPG modulation parameters.
